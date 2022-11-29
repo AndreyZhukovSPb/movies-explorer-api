@@ -6,7 +6,12 @@ const { DataError } = require('../utils/errors/DataError');
 
 const getMovies = (req, res, next) => Movie.find({})
   .then((movies) => {
-    res.send(movies);
+    if (movies.lenth === 0) { return res.send('у вас нет сохраненных фильмов'); }
+    const UserMovies = [];
+    movies.forEach((m) => {
+      if (m.owner.toString() === req.user._id) { UserMovies.push(m); }
+    });
+    return res.send(UserMovies);
   })
   .catch((err) => {
     next(err);
