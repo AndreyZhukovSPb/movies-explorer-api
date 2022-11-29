@@ -9,7 +9,11 @@ const { NotFoundError } = require('./utils/errors/NotFoundError');
 const { corsAllower } = require('./middlewares/cors');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
-const { PORT = 4000, MONGO_URL = 'mongodb://localhost:27017/diplomadb' } = process.env;
+const { NODE_ENV, JWT_SECRET, PORT = 4000, MONGO_URL = 'mongodb://localhost:27017/diplomadb' } = process.env;
+
+if (NODE_ENV === 'production') {
+  console.log(JWT_SECRET);
+}
 
 const {
   createUser,
