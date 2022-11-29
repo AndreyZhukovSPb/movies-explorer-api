@@ -7,6 +7,8 @@ const ALLOWED_CORS = [
   'https://praktikum.tk',
   'http://localhost:4000',
   'http://localhost:4001',
+  'http://diploma.zhukov.nomoredomains.club',
+  'https://diploma.zhukov.nomoredomains.club',
 ];
 
 const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
