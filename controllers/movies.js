@@ -6,11 +6,11 @@ const { DataError } = require('../utils/errors/DataError');
 
 const getMovies = (req, res, next) => Movie.find({})
   .then((movies) => {
-    if (movies.length === 0) { return res.send('у вас нет сохраненных фильмов'); }
     const UserMovies = [];
     movies.forEach((m) => {
       if (m.owner.toString() === req.user._id) { UserMovies.push(m); }
     });
+    if (UserMovies.length === 0) { return next(new NotFoundError('у вас нет сохраненных фильмов')); }
     return res.send(UserMovies);
   })
   .catch((err) => {
