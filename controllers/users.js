@@ -32,7 +32,9 @@ const createUser = (req, res, next) => {
       if (err instanceof mongoose.Error.ValidationError) {
         return next(new DataError('указаны некорректные данные'));
       }
-      if (err.code === 11000) { next(new AccessError('пользовталеь с таким email уже зарегистрирован')); }
+      if (err.code === 11000) {
+        return next(new AccessError('пользовталеь с таким email уже зарегистрирован'));
+      }
       return next(err);
     });
 };
