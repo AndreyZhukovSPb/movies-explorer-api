@@ -4,7 +4,6 @@ const User = require('../models/user');
 const { signToken } = require('../utils/jwt');
 const { NotFoundError } = require('../utils/errors/NotFoundError');
 const { DataError } = require('../utils/errors/DataError');
-const { LogError } = require('../utils/errors/LogError');
 const { AccessError } = require('../utils/errors/AccessError');
 
 const getUser = (req, res, next) => {
@@ -63,6 +62,9 @@ const updateUser = (req, res, next) => {
       if (err instanceof mongoose.Error.ValidationError) {
         return next(new DataError('указаны некорректные данные'));
       }
+      if (err.code === 11000) {
+        return next(new AccessError('пользовталеь с таким email уже зарегистрирован'));
+      }
       return next(err);
     });
 };
@@ -71,9 +73,9 @@ const login = (req, res, next) => {
   const { email, password } = req.body;
   User.findOne({ email }).select('+password')
     .then((user) => {
-      if (!user) { throw new LogError('пользователь не найден'); }
+      if (!user) { throw new NotFoundError('Неправильная почта или пароль'); }
       bcrypt.compare(password, user.password).then((match) => {
-        if (!match) { return next(new LogError('указан некорректный пароль')); }
+        if (!match) { return next(new NotFoundError('Неправильная почта или пароль')); }
         const result = signToken(user._id);
         return res.send({ data: result });
       });

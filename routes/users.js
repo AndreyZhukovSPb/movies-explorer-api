@@ -6,10 +6,10 @@ const {
   updateUser,
 } = require('../controllers/users');
 
-router.get('/me', getUser);
+router.get('/users/me', getUser);
 
 router.patch(
-  '/me',
+  '/users/me',
   celebrate({
     body: Joi.object().keys({
       name: Joi.string().required().min(2).max(30),

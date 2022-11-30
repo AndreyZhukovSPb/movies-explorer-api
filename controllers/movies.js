@@ -49,10 +49,13 @@ const deleteMovieById = (req, res, next) => Movie.findById(req.params.movieId)
     if (!movie) { throw new NotFoundError('фильм не найден'); }
     const ownerId = movie.owner.toString();
     if (ownerId !== req.user._id) { throw new RightsError('нет прав для удаления'); }
-    Movie.findByIdAndRemove(req.params.movieId)
+    return Movie.findByIdAndRemove(req.params.movieId)
       .then((data) => {
         if (!data) { return next(new NotFoundError('фильм не найден')); }
         return res.send(data);
+      })
+      .catch(() => {
+        throw new NotFoundError('фильм не найден');
       });
   })
   .catch((err) => {

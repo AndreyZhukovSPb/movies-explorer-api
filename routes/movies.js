@@ -9,10 +9,10 @@ const {
   deleteMovieById,
 } = require('../controllers/movies');
 
-router.get('/', getMovies);
+router.get('/movies', getMovies);
 
 router.post(
-  '/',
+  '/movies',
   celebrate({
     body: Joi.object().keys({
       country: Joi.string().required(),
@@ -24,7 +24,7 @@ router.post(
       trailerLink: Joi.string().regex(LINK_REGEX).required(),
       thumbnail: Joi.string().regex(LINK_REGEX).required(),
       // owner: Joi.string().length(24).hex().required(),
-      movieId: Joi.string().length(24).hex().required(),
+      movieId: Joi.number().required(),
       nameRU: Joi.string().regex(RU_REGEX).required(),
       nameEN: Joi.string().regex(ENG_REGEX).required(),
     }),
@@ -33,7 +33,7 @@ router.post(
 );
 
 router.delete(
-  '/:movieId',
+  '/movies/:movieId',
   celebrate({
     params: {
       movieId: Joi.string().length(24).hex().required(),
