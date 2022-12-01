@@ -10,8 +10,6 @@ const User = require('../models/user');
 
 const { LogError } = require('../utils/errors/LogError');
 
-const { RightsError } = require('../utils/errors/RightsError');
-
 const tokenAuth = (req, res, next) => {
   const bearerHeader = req.headers.authorization;
   if (!bearerHeader || bearerHeader === '') { throw new LogError('пустой токен'); }
@@ -19,14 +17,14 @@ const tokenAuth = (req, res, next) => {
   try {
     const result = jwt.verify(token, NODE_ENV === 'production' ? JWT_SECRET : LOCAL_SECRET_JWT);
     User.findOne({ _id: result.id }).then((user) => {
-      if (!user) { throw new RightsError('нет прав'); }
+      if (!user) { throw new LogError('необходима авторизация'); }
       req.user = {
         _id: result.id,
       };
       return next();
     });
   } catch (err) {
-    next(new RightsError('нет прав'));
+    next(new LogError('необходима авторизация'));
   }
 };
 

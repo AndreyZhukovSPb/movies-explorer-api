@@ -53,9 +53,6 @@ const deleteMovieById = (req, res, next) => Movie.findById(req.params.movieId)
       .then((data) => {
         if (!data) { return next(new NotFoundError('фильм не найден')); }
         return res.send(data);
-      })
-      .catch(() => {
-        throw new NotFoundError('фильм не найден');
       });
   })
   .catch((err) => {
