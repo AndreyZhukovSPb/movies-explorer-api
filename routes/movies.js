@@ -23,7 +23,7 @@ router.post(
       image: Joi.string().regex(LINK_REGEX).required(),
       trailerLink: Joi.string().regex(LINK_REGEX).required(),
       thumbnail: Joi.string().regex(LINK_REGEX).required(),
-      // owner: Joi.string().length(24).hex().required(),
+      owner: Joi.string().length(24).hex().required(),
       movieId: Joi.number().required(),
       nameRU: Joi.string().regex(RU_REGEX).required(),
       nameEN: Joi.string().regex(ENG_REGEX).required(),
@@ -37,6 +37,7 @@ router.delete(
   celebrate({
     params: {
       movieId: Joi.string().length(24).hex().required(),
+      // movieId: Joi.number().required(),
     },
   }),
   deleteMovieById,

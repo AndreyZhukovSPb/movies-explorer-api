@@ -10,7 +10,7 @@ const getMovies = (req, res, next) => Movie.find({})
     movies.forEach((m) => {
       if (m.owner.toString() === req.user._id) { UserMovies.push(m); }
     });
-    if (UserMovies.length === 0) { return next(new NotFoundError('у вас нет сохраненных фильмов')); }
+    // if (UserMovies.length === 0) { return next(new NotFoundError('у вас нет сохраненных фильмов')); }
     return res.send(UserMovies);
   })
   .catch((err) => {
